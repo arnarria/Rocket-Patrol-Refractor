@@ -10,7 +10,42 @@ class Rocket extends Phaser.GameObjects.Sprite {
     }
 
     update() {
-        // left/right movement
+
+        mouse.on
+        (
+            "pointermove", // event
+            (pointer) => // callback
+            {
+                if(!this.isFiring)
+                {
+                    this.x = Phaser.Math.Clamp(pointer.x, 47, 578);
+                }
+            },
+            this
+        );
+
+        // fire button
+        if(mouse.activePointer.leftButtonDown() && !this.isFiring) {
+            this.isFiring = true;
+            this.sfxRocket.play();
+        }
+        // if fired, move up
+        if(this.isFiring && this.y >= borderUISize * 3 + borderPadding) {
+            this.y -= this.moveSpeed;
+        }
+        // reset on miss
+        if(this.y <= borderUISize * 3 + borderPadding) {
+            this.reset();
+        }
+    }
+
+    // reset rocket 
+    reset()
+    {
+        this.isFiring = false;
+        this.y = game.config.height - borderUISize - borderPadding;
+    }
+        /* // left/right movement
         if(!this.isFiring) {
             if(keyLEFT.isDown && this.x >= borderUISize + this.width) {
                 this.x -= this.moveSpeed;
@@ -37,5 +72,5 @@ class Rocket extends Phaser.GameObjects.Sprite {
     reset() {
         this.isFiring = false;
         this.y = game.config.height - borderUISize - borderPadding;
-    }
+    } */
 }
